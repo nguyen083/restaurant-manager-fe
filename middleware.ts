@@ -13,5 +13,5 @@ export function middleware(request: NextRequest) {
 
 // Apply middleware chỉ cho các đường dẫn cần bảo vệ
 export const config = {
-  matcher: ["/home"], // route trang home
+  matcher: [], // route trang home
 };
