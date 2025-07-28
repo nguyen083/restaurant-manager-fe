@@ -11,7 +11,7 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends("next/core-web-vitals"),
   {
     files: ["**/*.{ts,tsx,js,jsx}"],
     plugins: {
@@ -19,7 +19,7 @@ const eslintConfig = [
     },
     rules: {
       // Format rules
-      semi: ["error", "always"],
+      semi: ["error", "never"],
       quotes: ["error", "single"],
       indent: ["error", 2],
       "comma-dangle": ["error", "always-multiline"],
@@ -27,7 +27,6 @@ const eslintConfig = [
       "arrow-spacing": ["error", { before: true, after: true }],
       "space-before-function-paren": ["error", "never"],
       "no-multi-spaces": "error",
-
       // Optional stricter rule
       "@typescript-eslint/explicit-function-return-type": "off",
     },
