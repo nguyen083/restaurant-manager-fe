@@ -1,14 +1,14 @@
 import { QueryClient, dehydrate } from '@tanstack/react-query'
 
 /**
- * Tạo QueryClient cho server-side rendering
- * Giúp prefetch data trên server để cải thiện SEO
+ * Create a QueryClient for server-side rendering
+ * Helps prefetch data on the server to improve SEO
  */
 export function createServerQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        // Quan trọng: không retry trên server để tránh chậm
+        // Important: do not retry on the server to avoid delays
         retry: false,
         staleTime: 1000 * 60 * 5,
       },
