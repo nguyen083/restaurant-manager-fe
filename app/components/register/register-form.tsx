@@ -1,0 +1,128 @@
+'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { useRegister } from '@/hooks/use-register'
+import { toast } from 'sonner'
+
+const registerFormSchema = z.object({
+  name: z.string().min(2, { message: 'Tên tài khoản phải có ít nhất 2 ký tự' }).max(50, { message: 'Tên tài khoản không được vượt quá 50 ký tự' }),
+  email: z.string().email({ message: 'Email không hợp lệ' }),
+  password: z.string().min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
+  confirmPassword: z.string().min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
+})
+
+export default function RegisterForm() {
+  const { mutate: register, isPending } = useRegister()
+
+  const form = useForm<z.infer<typeof registerFormSchema>>({
+    resolver: zodResolver(registerFormSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+  })
+  function onSubmit(values: z.infer<typeof registerFormSchema>) {
+    register(values, {
+      onSuccess: () => {
+        toast.success('Đăng ký thành công')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
+  }
+  return (
+    <Card className="w-full max-w-sm">
+      <CardHeader>
+        <CardTitle className="">Register to your account</CardTitle>
+        <CardDescription>
+          Enter your email below to register to your account
+        </CardDescription>
+      </CardHeader>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <CardContent className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tên tài khoản</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Tên tài khoản" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mật khẩu</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Mật khẩu" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Xác nhận mật khẩu</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Xác nhận mật khẩu" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          <CardFooter>
+            <Button disabled={isPending} type="submit">
+              {isPending ? 'Đang đăng ký...' : 'Đăng ký'}
+            </Button>
+          </CardFooter>
+        </form>
+      </Form>
+    </Card>
+  )
+}
