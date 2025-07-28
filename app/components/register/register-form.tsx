@@ -22,19 +22,23 @@ import {
 import { Input } from '@/components/ui/input'
 import { useRegister } from '@/hooks/use-register'
 import { toast } from 'sonner'
+import { RegisterRequest } from '@/types/register'
 
-const registerFormSchema = z.object({
+const schema = z.object({
   name: z.string().min(2, { message: 'Tên tài khoản phải có ít nhất 2 ký tự' }).max(50, { message: 'Tên tài khoản không được vượt quá 50 ký tự' }),
   email: z.string().email({ message: 'Email không hợp lệ' }),
   password: z.string().min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
   confirmPassword: z.string().min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Mật khẩu và xác nhận mật khẩu không khớp',
+  path: ['confirmPassword'],
 })
 
 export default function RegisterForm() {
   const { mutate: register, isPending } = useRegister()
 
-  const form = useForm<z.infer<typeof registerFormSchema>>({
-    resolver: zodResolver(registerFormSchema),
+  const form = useForm<RegisterRequest>({
+    resolver: zodResolver(schema),
     defaultValues: {
       name: '',
       email: '',
@@ -42,7 +46,7 @@ export default function RegisterForm() {
       confirmPassword: '',
     },
   })
-  function onSubmit(values: z.infer<typeof registerFormSchema>) {
+  function onSubmit(values: RegisterRequest) {
     register(values, {
       onSuccess: () => {
         toast.success('Đăng ký thành công')
@@ -96,7 +100,7 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormLabel>Mật khẩu</FormLabel>
                   <FormControl>
-                    <Input placeholder="Mật khẩu" {...field} />
+                    <Input type="password" placeholder="Mật khẩu" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,7 +113,7 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormLabel>Xác nhận mật khẩu</FormLabel>
                   <FormControl>
-                    <Input placeholder="Xác nhận mật khẩu" {...field} />
+                    <Input type="password" placeholder="Xác nhận mật khẩu" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
