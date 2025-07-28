@@ -2,7 +2,7 @@ import { QueryClient, dehydrate } from '@tanstack/react-query'
 
 /**
  * Create a QueryClient for server-side rendering
- * lps prefetch data on the server to improve SEO
+ * Helps prefetch data on the server to improve SEO
  */
 export function createServerQueryClient() {
   return new QueryClient({
