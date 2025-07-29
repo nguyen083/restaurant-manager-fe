@@ -51,9 +51,6 @@ export default function RegisterForm() {
       onSuccess: () => {
         toast.success('Đăng ký thành công')
       },
-      onError: (error) => {
-        toast.error(error.message)
-      },
     })
   }
   return (

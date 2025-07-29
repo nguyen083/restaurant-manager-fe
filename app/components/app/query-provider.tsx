@@ -1,7 +1,19 @@
 'use client'
 
-import { QueryClient, QueryClientProvider, HydrationBoundary } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider, HydrationBoundary, QueryCache, MutationCache } from '@tanstack/react-query'
 import { useState } from 'react'
+import { toast } from 'sonner'
+
+declare module '@tanstack/react-query'{
+    interface Register{
+        mutationMeta:{
+            doNotShowToast?: boolean
+        }
+        queryMeta:{
+            doNotShowToast?: boolean
+        }
+    }
+} 
 
 export function QueryProvider({ 
   children,
@@ -21,6 +33,21 @@ export function QueryProvider({
         refetchOnReconnect: false,
       },
     },
+    queryCache: new QueryCache({
+      onError: (error, query) => {
+        if(!query.meta?.doNotShowToast){
+          toast.error(error.message)
+        }
+      },
+    }),
+    mutationCache: new MutationCache({
+      onError: (error, variables, context, mutation) => {
+        if(!mutation.meta?.doNotShowToast){
+          console.log(error)
+          toast.error(error.message)
+        }
+      },
+    }),
   }))
 
   return (
