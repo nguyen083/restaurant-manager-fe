@@ -1,0 +1,31 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Commit Message Language Rule
+
+## English-Only Commit Messages
+
+All commit messages must be written in **English only**. This ensures consistency and readability for all team members.
+
+### Guidelines:
+- Use clear, concise English for commit messages
+- Follow conventional commit format when applicable (e.g., `feat:`, `fix:`, `docs:`, etc.)
+- Use present tense (e.g., "Add feature" not "Added feature")
+- Keep the first line under 50 characters when possible
+- Use imperative mood (e.g., "Fix bug" not "Fixes bug")
+
+### Examples:
+✅ **Good (English):**
+- `feat: add user authentication system`
+- `fix: resolve login form validation issue`
+- `docs: update API documentation`
+
+❌ **Avoid (Non-English):**
+- `feat: thêm hệ thống xác thực người dùng`
+- `fix: sửa lỗi validation form đăng nhập`
+
+### Note:
+This rule applies to all commits regardless of the developer's native language. English ensures better collaboration and understanding across the development team.
+
