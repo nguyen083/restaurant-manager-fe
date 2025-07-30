@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import { client } from '@/api'
-import { RegisterRequest } from '@/types/register'
+import { RegisterRequestBody } from '@/types/register'
 
 export function useRegister() {
   return useMutation({
-    mutationFn: async(body: RegisterRequest) => {
+    mutationFn: async(body: RegisterRequestBody) => {
       const { data, error } = await client.POST('/auth/register', {
         body,
       })

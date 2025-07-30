@@ -20,63 +20,45 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { useRegister } from '@/hooks/use-register'
+import { useLogin } from '@/hooks/use-login'
 import { toast } from 'sonner'
-import { RegisterRequestBody } from '@/types/register'
+import { LoginRequestBody } from '@/types/login'
+import { useRegister } from '@/hooks/use-register'
 
 const schema = z.object({
-  name: z.string().min(2, { message: 'Tên tài khoản phải có ít nhất 2 ký tự' }).max(50, { message: 'Tên tài khoản không được vượt quá 50 ký tự' }),
   email: z.string().email({ message: 'Email không hợp lệ' }),
   password: z.string().min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
-  confirmPassword: z.string().min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Mật khẩu và xác nhận mật khẩu không khớp',
-  path: ['confirmPassword'],
 })
 
-export default function RegisterForm() {
-  const { mutate: register, isPending } = useRegister()
+export default function LoginForm() {
+  const { mutate: login, isPending } = useLogin()
 
-  const form = useForm<RegisterRequestBody>({
+  const form = useForm<LoginRequestBody>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: '',
       email: '',
       password: '',
-      confirmPassword: '',
     },
   })
-  function onSubmit(values: RegisterRequestBody) {
-    register(values, {
+  function onSubmit(values: LoginRequestBody) {
+    login(values, {
       onSuccess: () => {
-        toast.success('Đăng ký thành công')
+        toast.success('Đăng nhập thành công')
       },
     })
   }
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle className="">Register to your account</CardTitle>
+        <CardTitle className="">Đăng nhập</CardTitle>
         <CardDescription>
-          Enter your email below to register to your account
+          Nhập email bên dưới để đăng nhập vào tài khoản của bạn
         </CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" noValidate>
           <CardContent className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tên tài khoản</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Tên tài khoản" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
             <FormField
               control={form.control}
               name="email"
@@ -103,23 +85,10 @@ export default function RegisterForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Xác nhận mật khẩu</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="Xác nhận mật khẩu" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </CardContent>
           <CardFooter>
             <Button disabled={isPending} type="submit">
-              {isPending ? 'Đang đăng ký...' : 'Đăng ký'}
+              {isPending ? 'Đang đăng nhập...' : 'Đăng nhập'}
             </Button>
           </CardFooter>
         </form>
