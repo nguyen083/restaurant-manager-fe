@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Be_Vietnam_Pro } from 'next/font/google'
 import '@/app/globals.css'
-import { ThemeProvider } from '@/app/components/app/theme-provider'
-import { QueryProvider } from '@/app/components/app/query-provider'
+import { ThemeProvider } from '@/components/app/theme-provider'
+import { QueryProvider } from '@/components/app/query-provider'
 import { Toaster } from '@/components/ui/sonner'
 
 const beVietnamPro = Be_Vietnam_Pro({

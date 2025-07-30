@@ -1,4 +1,4 @@
-import { ModeToggle } from '@/app/components/app/mode-toggle'
+import { ModeToggle } from '@/components/shared/mode-toggle'
 import Link from 'next/link'
 
 export const Header = () => {

@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { Header } from '@/app/components/app/header'
+import { Header } from '@/components/shared/header'
 
 export const metadata: Metadata = {
   title: 'Home page',
