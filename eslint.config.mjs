@@ -27,6 +27,7 @@ const eslintConfig = [
       "arrow-spacing": ["error", { before: true, after: true }],
       "space-before-function-paren": ["error", "never"],
       "no-multi-spaces": "error",
+      "no-console": ["warn", { allow: ["warn", "error"] }],
       // Optional stricter rule
       "@typescript-eslint/explicit-function-return-type": "off",
     },
