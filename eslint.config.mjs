@@ -28,6 +28,19 @@ const eslintConfig = [
       "space-before-function-paren": ["error", "never"],
       "no-multi-spaces": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          vars: "all",
+          args: "all",
+          functions: "all",
+          ignoreRestSiblings: false,
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+        },
+      ],
       // Optional stricter rule
       "@typescript-eslint/explicit-function-return-type": "off",
     },
