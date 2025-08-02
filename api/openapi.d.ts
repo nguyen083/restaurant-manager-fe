@@ -31,14 +31,12 @@ export interface paths {
       }
       responses: {
         /** @description User registered successfully */
-        201: {
+        200: {
           headers: {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse'] & {
-              data?: components['schemas']['User']
-            }
+            'application/json': components['schemas']['AuthResponse']
           }
         }
         /** @description Bad request */
@@ -90,13 +88,7 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse'] & {
-              data?: {
-                user?: components['schemas']['User']
-                accessToken?: string
-                refreshToken?: string
-              }
-            }
+            'application/json': components['schemas']['AuthResponse']
           }
         }
         /** @description Invalid credentials */
@@ -144,7 +136,59 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse']
+            'application/json': components['schemas']['MessageResponse']
+          }
+        }
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/auth/slide-session': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Refresh session
+     * @description Refresh the current session token
+     */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'application/json': Record<string, never>
+        }
+      }
+      responses: {
+        /** @description Session refreshed successfully */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['AuthResponse']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['ErrorResponse']
           }
         }
       }
@@ -181,9 +225,7 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse'] & {
-              data?: components['schemas']['User']
-            }
+            'application/json': components['schemas']['AccountResponse']
           }
         }
         /** @description Unauthorized */
@@ -220,9 +262,7 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse'] & {
-              data?: components['schemas']['User']
-            }
+            'application/json': components['schemas']['AccountResponse']
           }
         }
         /** @description Unauthorized */
@@ -268,7 +308,7 @@ export interface paths {
           'multipart/form-data': {
             /**
              * Format: binary
-             * @description Image file to upload
+             * @description Image file to upload (max 10MB)
              */
             file?: string
           }
@@ -281,15 +321,7 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse'] & {
-              data?: {
-                /**
-                 * Format: uri
-                 * @example http://localhost:4000/static/bec024f9ea534b7fbf078cb5462b30aa.jpg
-                 */
-                url?: string
-              }
-            }
+            'application/json': components['schemas']['MediaResponse']
           }
         }
         /** @description Bad request */
@@ -335,9 +367,7 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse'] & {
-              data?: components['schemas']['Product'][]
-            }
+            'application/json': components['schemas']['ProductListResponse']
           }
         }
       }
@@ -361,14 +391,12 @@ export interface paths {
       }
       responses: {
         /** @description Product created successfully */
-        201: {
+        200: {
           headers: {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse'] & {
-              data?: components['schemas']['Product']
-            }
+            'application/json': components['schemas']['ProductResponse']
           }
         }
         /** @description Bad request */
@@ -420,9 +448,7 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse'] & {
-              data?: components['schemas']['Product']
-            }
+            'application/json': components['schemas']['ProductResponse']
           }
         }
         /** @description Product not found */
@@ -465,9 +491,7 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse'] & {
-              data?: components['schemas']['Product']
-            }
+            'application/json': components['schemas']['ProductResponse']
           }
         }
         /** @description Product not found */
@@ -507,7 +531,7 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse']
+            'application/json': components['schemas']['MessageResponse']
           }
         }
         /** @description Product not found */
@@ -552,7 +576,7 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['ApiResponse']
+            'application/json': components['schemas']['MessageResponse']
           }
         }
       }
@@ -569,7 +593,7 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
-    User: {
+    Account: {
       /** @example 1 */
       id?: number
       /** @example Dư Thanh Được */
@@ -579,10 +603,6 @@ export interface components {
        * @example user@gmail.com
        */
       email?: string
-      /** Format: date-time */
-      createdAt?: string
-      /** Format: date-time */
-      updatedAt?: string
     }
     Product: {
       /** @example 1 */
@@ -627,7 +647,7 @@ export interface components {
     }
     UpdateAccountRequest: {
       /** @example Duoc Hello */
-      name?: string
+      name: string
     }
     CreateProductRequest: {
       /** @example Iphone 13 */
@@ -644,26 +664,54 @@ export interface components {
     }
     UpdateProductRequest: {
       /** @example Chào */
-      name?: string
+      name: string
       /** @example 123123123 */
-      description?: string
+      description: string
       /**
        * Format: uri
        * @example http://localhost:4000/static/c4819080a778412a8c715afd0e2ca90f.jpg
        */
-      image?: string
+      image: string
       /** @example 100000000 */
-      price?: number
+      price: number
     }
-    ApiResponse: {
+    AuthResponse: {
       message?: string
-      data?: Record<string, never>
+      data?: {
+        token?: string
+        /** Format: date-time */
+        expiresAt?: string
+        account?: components['schemas']['Account']
+      }
+    }
+    AccountResponse: {
+      message?: string
+      data?: components['schemas']['Account']
+    }
+    ProductResponse: {
+      message?: string
+      data?: components['schemas']['Product']
+    }
+    ProductListResponse: {
+      message?: string
+      data?: components['schemas']['Product'][]
+    }
+    MediaResponse: {
+      message?: string
+      /**
+       * Format: uri
+       * @example http://localhost:4000/static/bec024f9ea534b7fbf078cb5462b30aa.jpg
+       */
+      data?: string
+    }
+    MessageResponse: {
+      message?: string
     }
     ErrorResponse: {
       message: string
       errors?: {
-        field: string
-        message: string
+        field?: string
+        message?: string
       }[]
       statusCode: number
     }
