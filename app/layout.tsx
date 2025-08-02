@@ -30,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${beVietnamPro.className} antialiased`}
       > 
-        <Toaster position="top-center"/>
+        <Toaster position="top-center" richColors />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
