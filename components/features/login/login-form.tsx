@@ -42,8 +42,12 @@ export default function LoginForm() {
   })
   function onSubmit(values: LoginRequestBody) {
     login(values, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         toast.success('Đăng nhập thành công')
+        fetch('/api', {
+          method: 'POST',
+          body: JSON.stringify({ sessionToken: data.data.token, expiresAt: data.data.expiresAt }),
+        })
       },
       onError: (error) => {
         if (error instanceof ErrorCustom) {
