@@ -17,7 +17,7 @@ export function createServerQueryClient() {
 }
 
 export async function prefetchServerData(
-  prefetchFn: (queryClient: QueryClient) => Promise<void>,
+  prefetchFn: (_queryClient: QueryClient) => Promise<void>,
 ) {
   const queryClient = createServerQueryClient()
   
@@ -26,7 +26,6 @@ export async function prefetchServerData(
     return dehydrate(queryClient)
   } catch (error) {
     console.error('Error prefetching server data:', error)
-    // Trả về state rỗng thay vì throw error để trang vẫn render được
     return dehydrate(queryClient)
   }
 } 

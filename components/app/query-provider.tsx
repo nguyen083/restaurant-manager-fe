@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 
 declare module '@tanstack/react-query'{
+    // eslint-disable-next-line no-unused-vars
     interface Register{
         mutationMeta:{
             doNotShowToast?: boolean
