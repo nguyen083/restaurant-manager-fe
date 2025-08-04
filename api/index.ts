@@ -14,9 +14,14 @@ const client = createClient<paths>({
 })
 
 const middleware: Middleware = {
+
   async onRequest({ request }) {
     if (!request.doNotShowLoading) {
       nprogress.start()
+    }
+    if (request.sessionToken) {
+      request.headers.set('Content-Type', 'application/json')
+      request.headers.set('Authorization', `Bearer ${request.sessionToken}`)
     }
     return request
   },
