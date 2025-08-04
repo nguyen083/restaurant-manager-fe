@@ -18,7 +18,6 @@ const eslintConfig = [
       "@typescript-eslint": tseslint.plugin,
     },
     rules: {
-      // Format rules
       semi: ["error", "never"],
       quotes: ["error", "single"],
       indent: ["error", 2],
@@ -28,21 +27,21 @@ const eslintConfig = [
       "space-before-function-paren": ["error", "never"],
       "no-multi-spaces": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": [
+      "no-alert": "warn",
+      "no-tabs": "warn",
+      "symbol-description": "off",
+      "no-unused-vars": [
         "warn",
         {
           vars: "all",
-          args: "all",
-          functions: "all",
+          args: "after-used",
+          caughtErrors: "all",
           ignoreRestSiblings: false,
+          ignoreUsingDeclarations: false,
+          reportUsedIgnorePattern: false,
           argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-          destructuredArrayIgnorePattern: "^_",
         },
       ],
-      // Optional stricter rule
-      "@typescript-eslint/explicit-function-return-type": "off",
     },
   },
 ];
