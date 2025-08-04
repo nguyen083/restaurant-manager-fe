@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { client } from '@/api'
 import { RegisterRequestBody } from '@/types/register'
+import { ErrorCustom } from '@/types/error'
 
 export function useRegister() {
   return useMutation({
@@ -9,7 +10,7 @@ export function useRegister() {
         body,
       })
       if (error) {
-        throw error
+        throw new ErrorCustom(error)
       }
       return data
     },

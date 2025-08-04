@@ -23,10 +23,10 @@ import { Input } from '@/components/ui/input'
 import { useLogin } from '@/hooks/use-login'
 import { toast } from 'sonner'
 import { LoginRequestBody } from '@/types/login'
-import { useRegister } from '@/hooks/use-register'
+import { ErrorCustom } from '@/types/error'
 
 const schema = z.object({
-  email: z.string().email({ message: 'Email không hợp lệ' }),
+  email: z.email({ message: 'Email không hợp lệ' }),
   password: z.string().min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
 })
 
@@ -44,6 +44,13 @@ export default function LoginForm() {
     login(values, {
       onSuccess: () => {
         toast.success('Đăng nhập thành công')
+      },
+      onError: (error) => {
+        if (error instanceof ErrorCustom) {
+          error.errors?.forEach((error) => {
+            form.setError(error.field as keyof LoginRequestBody, { message: error.message })
+          })
+        }
       },
     })
   }

@@ -23,10 +23,11 @@ import { Input } from '@/components/ui/input'
 import { useRegister } from '@/hooks/use-register'
 import { toast } from 'sonner'
 import { RegisterRequestBody } from '@/types/register'
+import { ErrorCustom } from '@/types/error'
 
 const schema = z.object({
   name: z.string().min(2, { message: 'Tên tài khoản phải có ít nhất 2 ký tự' }).max(50, { message: 'Tên tài khoản không được vượt quá 50 ký tự' }),
-  email: z.string().email({ message: 'Email không hợp lệ' }),
+  email: z.email({ message: 'Email không hợp lệ' }),
   password: z.string().min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
   confirmPassword: z.string().min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -51,14 +52,26 @@ export default function RegisterForm() {
       onSuccess: () => {
         toast.success('Đăng ký thành công')
       },
+      onError: (error) => {
+        if (error instanceof ErrorCustom) {
+          if (error.errors) {
+            error.errors.forEach((err) => {
+              form.setError(err.field as keyof RegisterRequestBody, {
+                message: err.message,
+                type: 'server',
+              })
+            })
+          }
+        }
+      },
     })
   }
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle className="">Register to your account</CardTitle>
+        <CardTitle className="">Đăng ký tài khoản</CardTitle>
         <CardDescription>
-          Enter your email below to register to your account
+          Nhập thông tin để đăng ký tài khoản
         </CardDescription>
       </CardHeader>
       <Form {...form}>
