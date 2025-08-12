@@ -12,7 +12,7 @@ export class ErrorCustom extends Error {
   statusCode: number
   errors?: ErrorsProps[]
   constructor(error: ErrorResponse) {
-    super(error.message)
+    super()
     this.message = error.message
     this.statusCode = error.statusCode
     this.errors = error.errors

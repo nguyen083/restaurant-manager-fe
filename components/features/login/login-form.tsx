@@ -25,7 +25,7 @@ import { toast } from 'sonner'
 import { LoginRequestBody } from '@/types/login'
 import { ErrorCustom } from '@/types/error'
 
-const schema = z.object({
+export const LoginFormSchema = z.object({
   email: z.email({ message: 'Email không hợp lệ' }),
   password: z.string().min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
 })
@@ -34,7 +34,7 @@ export default function LoginForm() {
   const { mutate: login, isPending } = useLogin()
 
   const form = useForm<LoginRequestBody>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -42,12 +42,8 @@ export default function LoginForm() {
   })
   function onSubmit(values: LoginRequestBody) {
     login(values, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         toast.success('Đăng nhập thành công')
-        fetch('/api', {
-          method: 'POST',
-          body: JSON.stringify({ sessionToken: data.data.token, expiresAt: data.data.expiresAt }),
-        })
       },
       onError: (error) => {
         if (error instanceof ErrorCustom) {
@@ -58,10 +54,11 @@ export default function LoginForm() {
       },
     })
   }
+  
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle className="">Đăng nhập</CardTitle>
+        <CardTitle>Đăng nhập</CardTitle>
         <CardDescription>
           Nhập email bên dưới để đăng nhập vào tài khoản của bạn
         </CardDescription>
@@ -69,7 +66,6 @@ export default function LoginForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" noValidate>
           <CardContent className="space-y-4">
-
             <FormField
               control={form.control}
               name="email"
